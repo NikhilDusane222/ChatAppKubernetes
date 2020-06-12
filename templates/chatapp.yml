@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+   name: chat-deployment
+   labels:
+     app: {{ .Values.Deployments.appName }}
+spec:
+   replicas: {{ .Values.Deployments.appReplicas }}
+   selector:
+     matchLabels:
+       app: {{ .Values.Deployments.appName }}
+   template:
+     metadata:
+       labels:
+         app: {{ .Values.Deployments.appName }}
+     spec:
+       affinity:
+#         nodeAffinity:
+#           requiredDuringSchedulingIgnoredDuringExecution:
+#             nodeSelectorTerms:
+#             - matchExpressions:
+#               - key: name
+#                 operator: In
+#                 values:
+#                 - worker3
+#                 - worker2
+         podAntiAffinity:
+           requiredDuringSchedulingIgnoredDuringExecution:
+           - labelSelector:
+               matchExpressions:
+               - key: app
+                 operator: In
+                 values: 
+                 - {{ .Values.Deployments.appName }}
+             topologyKey: "kubernetes.io/hostname"
+       containers:
+       - name: {{ .Values.Deployments.appName }}
+         image: {{ .Values.Deployments.appUrl }}
+         envFrom:
+         - configMapRef:
+             name: {{ .Values.Deployments.appEnv }}
+         ports:
+         - containerPort: {{ .Values.Deployments.appPort }}
+         resources: 
+           limits: 
+             cpu: 250m
+

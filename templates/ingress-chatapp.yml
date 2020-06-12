@@ -1,0 +1,16 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: chatapp-ingress
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    kubernetes.io/tls-acme: 'true'
+spec:
+  rules:
+  - host: bridgelabz.dusane.tk
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: chatapplication
+          servicePort: 80

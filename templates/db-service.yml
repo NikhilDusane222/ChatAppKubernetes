@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: database1
+  labels:
+    app: {{ .Values.Service.dbName }}
+spec:
+  type: NodePort
+  ports:
+   - port: {{ .Values.Service.dbSvc }}
+  selector:
+   app: {{ .Values.Service.dbName }}

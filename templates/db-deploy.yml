@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+spec:
+  replicas: {{ .Values.Deployments.dbReplicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.Deployments.dbName }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.Deployments.dbName }}
+    spec:
+      containers:
+        - name: {{ .Values.Deployments.dbName }}
+          image: {{ .Values.Deployments.dbUrl }}
+          ports:
+            - containerPort: {{ .Values.Deployments.dbPort }}
+          envFrom:
+            - configMapRef:
+                name: {{ .Values.Deployments.appEnv }}
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: {{ .Values.Deployments.volName }}
+      volumes: 
+        - name: {{ .Values.Deployments.volName }}
+          persistentVolumeClaim:
+            claimName: postgres-pv-claim

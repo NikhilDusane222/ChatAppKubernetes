@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.Deployments.appEnv }}
+  labels:
+    app: {{ .Values.Deployments.dbName }}
+data:
+  POSTGRES_DB: chatApp
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: admin123

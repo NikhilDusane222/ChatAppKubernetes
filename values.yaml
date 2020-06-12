@@ -1,0 +1,21 @@
+replicacount: 1
+Deployments:
+  appName: chatapplication
+  appEnv: postgres-config
+  dbName: database1
+  appPort: 8000
+  dbPort: 5432
+  appUrl: 296838539158.dkr.ecr.ap-south-1.amazonaws.com/chatapplication:chatapp
+  dbUrl: 296838539158.dkr.ecr.ap-south-1.amazonaws.com/chatapplication:database1
+  volName: postgres-pv-volume
+  volClaim: postgres-pv-claim
+  appReplicas: 1
+  dbReplicas: 1
+  volClaimReqStorage: 5Gi
+
+Service:
+  appName: chatapplication
+  dbName: database1
+  appTargetPort: 8000
+  appSvc: 80
+  dbSvc: 5432
